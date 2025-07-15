@@ -76,6 +76,7 @@ def main():
     st.set_page_config(page_title="Classificador EuroSAT")
 
     st.title("🌍 Classificador de Imagens Satélite - EuroSAT")
+    st.write("https://colab.research.google.com/drive/1x6Ov0Tn-aEAefkPLmpmxyidWAtAmstic?usp=sharing")
     st.write("Envie uma imagem e descubra sua provável classe.")
 
     interpreter = carregar_modelo()
