@@ -25,6 +25,9 @@ Instale as bibliotecas necessárias antes de executar:
 ```bash
 pip install tensorflow tensorflow-datasets pillow matplotlib
 ```
+```bash
+pip install streamlit gdown numpy pandas plotly
+```
 
 ---
 
@@ -33,11 +36,10 @@ pip install tensorflow tensorflow-datasets pillow matplotlib
 1. **Clone o repositório**:
 
 ```bash
-git clone https://github.com/seu-usuario/seu-repo.git
-cd seu-repo
+git clone https://github.com/Mazalem/Modelo-EuroSAT.git
 ```
 
-2. **Execute o script principal** (em Python 3.9+):
+2. **Execute o script principal** (em Python 3.12):
 
 ```bash
 python treinando_eurosat.py
@@ -48,79 +50,9 @@ python treinando_eurosat.py
 - Acurácia final exibida no terminal
 - Arquivo `modelo_eurosat.tflite` salvo na pasta do projeto
 - Pasta `imagens_eurosat/` criada com exemplos de imagens salvas
-
 ---
+## Teste o modelo EuroSAT
 
-## 🏠 Estrutura do Código
+Você pode acessar a aplicação diretamente pelo link abaixo:
 
-### 🔹 Carregamento do Dataset
-
-Divide 80% para treino e 20% para teste, com rótulos supervisionados:
-
-```python
-(ds_train, ds_test), ds_info = tfds.load(
-    'eurosat',
-    split=['train[:80%]', 'train[80%:]'],
-    shuffle_files=True,
-    as_supervised=True,
-    with_info=True
-)
-```
-
-### 🔹 Pré-processamento
-
-Normaliza imagens (0–1) e organiza em batches:
-
-```python
-def preprocess(image, label):
-    image = tf.cast(image, tf.float32) / 255.0
-    return image, label
-```
-
-### 🔹 Data Augmentation
-
-```python
-data_augmentation = tf.keras.Sequential([
-    tf.keras.layers.RandomFlip("horizontal"),
-    tf.keras.layers.RandomRotation(0.1),
-    tf.keras.layers.RandomZoom(0.1),
-    tf.keras.layers.RandomTranslation(0.1, 0.1)
-])
-```
-
-### 🔹 Modelo CNN
-
-Convoluções + pooling + fully connected:
-
-```python
-model = tf.keras.Sequential([
-    tf.keras.layers.Input(shape=IMG_SHAPE),
-    data_augmentation,
-    tf.keras.layers.Conv2D(32, 3, activation='relu', padding='same'),
-    tf.keras.layers.Conv2D(32, 3, activation='relu', padding='same'),
-    tf.keras.layers.MaxPooling2D(),
-    tf.keras.layers.Conv2D(64, 3, activation='relu', padding='same'),
-    tf.keras.layers.Conv2D(64, 3, activation='relu', padding='same'),
-    tf.keras.layers.MaxPooling2D(),
-    tf.keras.layers.Conv2D(128, 3, activation='relu', padding='same'),
-    tf.keras.layers.GlobalAveragePooling2D(),
-    tf.keras.layers.Dense(256, activation='relu'),
-    tf.keras.layers.Dropout(0.4),
-    tf.keras.layers.Dense(NUM_CLASSES, activation='softmax')
-])
-```
-
----
-
-## 📈 Resultados
-
-Após o treinamento:
-
-```
-👌 Acurácia final no EuroSAT: 95.00%  (exemplo)
-👌 Modelo salvo como .keras e .tflite com sucesso.
-👌 Imagens salvas na pasta imagens_eurosat/
-```
-
----
-
+[🚀 Acessar o Modelo EuroSAT](https://modelo-eurosat.streamlit.app)
